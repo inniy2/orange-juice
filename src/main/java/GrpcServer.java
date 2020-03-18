@@ -1,6 +1,7 @@
 import java.io.IOException;
 
 import com.bss.orange.ghost.GhostService;
+import com.bss.orange.ghost.Singleton;
 
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
@@ -9,8 +10,11 @@ import io.grpc.ServerBuilder;
 public class GrpcServer {
 
 	public static void main(String[] args) throws IOException, InterruptedException {
+		Singleton singleton = Singleton.getInstance();
+		int port = Integer.parseInt(singleton.prop.getProperty("service.port"));
+		
 		Server server = ServerBuilder.
-				forPort(9090).addService(new GhostService()).build();
+				forPort(port).addService(new GhostService()).build();
 		
 		server.start();
 		
@@ -19,5 +23,4 @@ public class GrpcServer {
 		server.awaitTermination();
 
 	}
-
 }
